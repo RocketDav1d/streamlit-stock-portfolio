@@ -12,6 +12,7 @@ import datetime
 from datetime import date, timedelta
 import csv
 import plotly.express as px
+import altair as alt
 
 load_dotenv()
 TRADING_API_KEY = os.environ.get("TRADING_API_KEY")
