@@ -101,9 +101,3 @@ This line() method takes a dataframe as input parameter. I decided to create a c
 Then we again use a placeholder variable( this variable is equal to st.empty()) and apply streamlit’s container method on it.
 
 In the container we use streamlit’s plotly_chart() method and hand over our plotly figure as the input parameter.
-
-Finished!!!
-=======
-
-![](images/portfolio%20performance%20graph%20.png)
->>>>>>> 05888ad68614a8a5f8e9ddf5684cbe162655a6b9
