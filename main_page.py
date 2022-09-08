@@ -1,18 +1,13 @@
 import streamlit as st
 import time
-from calendar import c
-from re import I
-from urllib import response
 import os
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 import pandas as pd
 from lemon import api
 from dotenv import load_dotenv
 import datetime
-from datetime import date, timedelta
 import csv
 import plotly.express as px
-import altair as alt
 
 load_dotenv()
 TRADING_API_KEY = os.environ.get("TRADING_API_KEY")
@@ -32,74 +27,73 @@ placeholder = st.empty()
 placeholder_1 = st.empty()
 
 
-def dataset():
+def metrics_and_dataframe():
     while True:
-        while True:
-            #--------- numbers -----------
-            response = client.trading.positions.get()
-            temp_portfolio_value = []
-            temp_total_investment_value = []
+        #--------- numbers -----------
+        response = client.trading.positions.get()
+        temp_portfolio_value = []
+        temp_total_investment_value = []
 
-            for i in response.results:
-                temp_portfolio_value.append(i.estimated_price_total)
-                portfolio_value = sum(temp_portfolio_value)
+        for i in response.results:
+            temp_portfolio_value.append(i.estimated_price_total)
+            portfolio_value = sum(temp_portfolio_value)
 
-                temp = (i.buy_price_avg * i.quantity)
-                temp_total_investment_value.append(temp)
-                total_investment_value = sum(temp_total_investment_value)
+            temp = (i.buy_price_avg * i.quantity)
+            temp_total_investment_value.append(temp)
+            total_investment_value = sum(temp_total_investment_value)
 
 
-            gain_loss = total_investment_value - portfolio_value
-            percentage_gain_loss = (gain_loss / total_investment_value) * 100
+        gain_loss = total_investment_value - portfolio_value
+        percentage_gain_loss = (gain_loss / total_investment_value) * 100
 
-            portfolio_value = (str(portfolio_value)[:4] + "." + str(portfolio_value)[4:] + "€")
-            total_investment_value = (str(total_investment_value)[:4] + "." + str(total_investment_value)[4:] + "€")
-            gain_loss = (str(gain_loss)[:4] + "." + str(gain_loss)[4:] + "€")
-            percentage_gain_loss =  (str(round(percentage_gain_loss)) + " %")
+        portfolio_value = (str(portfolio_value)[:4] + "." + str(portfolio_value)[4:] + "€")
+        total_investment_value = (str(total_investment_value)[:4] + "." + str(total_investment_value)[4:] + "€")
+        gain_loss = (str(gain_loss)[:4] + "." + str(gain_loss)[4:] + "€")
+        percentage_gain_loss =  (str(round(percentage_gain_loss)) + " %")
 
+        
+    #-----------table --------------
+
+        quotes = client.market_data.quotes.get_latest(
+        isin=[x.isin for x in response.results]
+        )
+        current_prices = [i.b_v for i in quotes.results]
+
+        yesterday_close = client.market_data.ohlc.get(
+                isin=[x.isin for x in response.results],
+                period='d1',
+                from_=(datetime.datetime.now() - timedelta(days=1)).isoformat(),
+                to=(datetime.datetime.now() - timedelta(days=1)).isoformat()
+        )
+        daily_gains = [int(x) - int(y.c) for x, y in zip(current_prices, yesterday_close.results)]
+        total_gains = [int(x.buy_price_avg) - int(y) for x, y in zip(response.results, current_prices)]
+
+
+        dict = {
+                "isin": [x.isin for x in response.results], 
+                "quantity": [x.quantity for x in response.results], 
+                "average buy-in price": [x.buy_price_avg for x in response.results], 
+                "total value": [x.estimated_price_total for x in response.results], 
+                "current price": [x for x in current_prices], 
+                "daily gain": [x for x in daily_gains],
+                "total gain": [x for x in total_gains]
+                }
+
+
+
+        
+        with placeholder.container():
             
-        #-----------table --------------
+            p_v, t_i, g_l= st.columns(3)
 
-            quotes = client.market_data.quotes.get_latest(
-            isin=[x.isin for x in response.results]
-            )
-            current_prices = [i.b_v for i in quotes.results]
+            p_v.metric(label="Portfolio Value", value=portfolio_value, delta=None)
+            t_i.metric(label="Total Investment", value=total_investment_value, delta=None)
+            g_l.metric(label="Gain / Loss", value=gain_loss, delta=percentage_gain_loss, delta_color="normal")
 
-            yesterday_close = client.market_data.ohlc.get(
-                    isin=[x.isin for x in response.results],
-                    period='d1',
-                    from_=(datetime.datetime.now() - timedelta(days=1)).isoformat(),
-                    to=(datetime.datetime.now() - timedelta(days=1)).isoformat()
-            )
-            daily_gains = [int(x) - int(y.c) for x, y in zip(current_prices, yesterday_close.results)]
-            total_gains = [int(x.buy_price_avg) - int(y) for x, y in zip(response.results, current_prices)]
+            st.table(dict)
 
 
-            dict = {
-                    "isin": [x.isin for x in response.results], 
-                    "quantity": [x.quantity for x in response.results], 
-                    "average buy-in price": [x.buy_price_avg for x in response.results], 
-                    "total value": [x.estimated_price_total for x in response.results], 
-                    "current price": [x for x in current_prices], 
-                    # "daily gain": [x for x in daily_gains],
-                    "total gain": [x for x in total_gains]
-                    }
-
-
-
-            
-            with placeholder.container():
-                
-                p_v, t_i, g_l= st.columns(3)
-
-                p_v.metric(label="Portfolio Value", value=portfolio_value, delta=None)
-                t_i.metric(label="Total Investment", value=total_investment_value, delta=None)
-                g_l.metric(label="Gain / Loss", value=gain_loss, delta=percentage_gain_loss, delta_color="normal")
-
-                st.table(dict)
-
-
-                time.sleep(10)
+            time.sleep(20)
 
 
 
@@ -127,7 +121,7 @@ with st.form("form1"):
 from_date_outside_loop = from_date
 
 
-def update_chart(from_date, to_date):
+def graph(from_date, to_date):
         if ((to_date - from_date).days < 60):
             for isin in isins:
                 ohlc_response = client.market_data.ohlc.get(
@@ -239,8 +233,8 @@ def update_chart(from_date, to_date):
 
 
 if submit:
-    update_chart(from_date=from_date, to_date=to_date)
-dataset()
+    graph(from_date=from_date, to_date=to_date)
+metrics_and_dataframe()
 
 
 
