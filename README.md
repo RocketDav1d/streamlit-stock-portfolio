@@ -5,7 +5,6 @@ https://rocketdav1d-streamlit-stock-portfolio-main-page-uieq9e.streamlitapp.com/
 
 You can find an article explaining the portfolio here
 
-<<<<<<< HEAD
 If you take a look at main_page.py you find that it mainly consits of two functions which get called at the end of the program.
 Let's take a look at how these two functions work in more detail
 
