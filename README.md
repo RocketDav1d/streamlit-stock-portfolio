@@ -1,7 +1,6 @@
 ## streamlit stock portfolio 📈🤑
 
-Get a glimpse of the running version here:
-https://rocketdav1d-streamlit-stock-portfolio-main-page-uieq9e.streamlitapp.com/
+Get a glimpse of the running version [here](https://rocketdav1d-streamlit-stock-portfolio-main-page-uieq9e.streamlitapp.com/)
 
 You can find an article explaining the portfolio here
 
@@ -39,21 +38,17 @@ We then want to calculate the daily gains and save them in a list. Using zip() o
 
 Then we do the same in order to calculate total gains.
 
-Finally we create a dictionary containing all of our data. For isin, quantity, average buy-in price and total value we can loop trough the response results of the positions endpoint (remember we’re still in the same loop as the “metrics” logic above). For current price, daily gains and total gains we respective lists we just created. 
+Finally we create a dictionary containing all of our data. For isin, quantity, average buy-in price and total value we can loop trough the response results of the positions endpoint (remember we’re still in the same loop as the “metrics” logic above). For current price, daily gains and total gains we respective lists we just created. We save it in a dictionary because that is (one of) the data format streamlit accepts.
 
-I’m explaining why we need a dictionary soon.
-
-
-You might ask yourself, how and when we are going to use streamlit to print out this data on our streamlit web page. Now! 
-
-Here it is important to know how streamlit works when you want to constantly update information. For that we need to create a placeholder using the empty() method from streamlit OUTSIDE and ABOVE our metrics_and_dataframe function. This inserts a container into our app that can be used to hold a single element. This allows us to, for example, remove elements at any point, or replace several elements at once (using a child multi-element container 👨‍👩‍👦).
+Let's talk streamlit!
+it is important to know how streamlit works when you want to constantly update information. For that we need to create a placeholder using the empty() method from streamlit OUTSIDE and ABOVE our metrics_and_dataframe function. This inserts a container into our app that can be used to hold a single element. This allows us to, for example, remove elements at any point, or replace several elements at once (using a child multi-element container 👨‍👩‍👦).
 
 
 Then inside our function at the end of the while loop we use this placeholder and call the container method on it. That inserts an invisible container into our app that can be used to hold multiple elements. (this is the child multi-element container 👨‍👩‍👦 mentioned above) 
 
 In this container we create three columns for our 3 metrics and use the metric method from streamlit to create Portfolio Value, Total Investment and Gain / Loss. We pass in percentage_gain_loss as the delta for the Gain / Loss metric.
 
-Also we create the data table by using the table method from streamlit and put in our dictionary as the argument.
+We create the data table by using the table method from streamlit and put in our dictionary as the argument.
 
 
 That’s it for the first part. You can already run your app to see if it works with the following command.
@@ -70,12 +65,12 @@ Now we want to tackle the interactive graph.
 The graph will show the overall portfolio worth of each day. Thats why we create a dictionary in which we save all our data. The keys will be the isin’s of our positions and the values for each key will be a list containing the portfolio worth for each day. 
 
 
- Then we ask the user to select a from and to date using streamlit form and date_input methods. 
+Then we ask the user to select a from and to date using streamlit form and date_input methods. 
 
 We also assign the selected from_date to a variable called from_date_outside_loop. This is necessary because we will work with and change from_date and need a variable that always stores the initial value of from_date.
 
 
-Then we create the function called graph()
+We then create the function called graph()
 
 
 Now let’s take a look at whats happening here. 
@@ -84,7 +79,7 @@ When we enter the function we’ll first stumble upon an if else statement. This
 
 1️⃣ If the period is less then 60 days the logic is quite straight forward. We loop through all the isin’s of our positions and append the results to temporary lists. Then we save this list in prices_dict and dates_dict with the isisn as the key and the list as the value.
 
-2️⃣ Else it’s getting a bit more complicated. We also first loop trough all isin’s in our positions. But then we need a while loop to make multiple 60 day requests to the ohlc endpoint. Again we append the results to temporary lists. Different then before we now need to check if an isin and a temporay list have been saved to prices_dict and dates_dict. If yes we use the asterisks operator to save our new temp_list containing 60 days of ohlc data to the existing prices_dict and dates_dict.After that we increase from_date by 60 days each iteration and then check if the period between the from and to date is smaller than 60 days. If yes the same logic as in 1️⃣ applies and we reset from_date using the from_date_outside_loop and break out of the while loop. Now the program is in the for loop and goes into the while loop again but this time with a different isin. This continues until all isin of our positions have been looped trough.
+2️⃣ Else is getting a bit more complicated. We also first loop trough all isin’s in our positions. But then we need a while loop to make multiple 60 day requests to the ohlc endpoint. Again we append the results to temporary lists. Different then before we now need to check if an isin and a temporay list have been saved to prices_dict and dates_dict. If yes we use the asterisks operator to save our new temp_list containing 60 days of ohlc data to the existing prices_dict and dates_dict.After that we increase from_date by 60 days each iteration and then check if the period between the from and to date is smaller than 60 days. If yes the same logic as in 1️⃣ applies and we reset from_date using the from_date_outside_loop and break out of the while loop. Now the program is in the for loop and goes into the while loop again but this time with a different isin. This continues until all isin of our positions have been looped trough.
 
 
 Inside the same graph() function we then first take each closing price and multiply it with the quantity from our positions. After that we add up all closing prices from all instruments with each other and save it in a final list called portfolio_values_of_all_instruments. 
