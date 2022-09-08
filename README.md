@@ -4,6 +4,8 @@ Get a glimpse of the running version [here](https://rocketdav1d-streamlit-stock-
 
 You can find an article explaining the portfolio [here](https://medium.com/lemon-markets)
 
+This code runs on the Streamlit [Cloud](https://streamlit.io/cloud). A free service by Streamlit to share your data apps by deploying directly from the GitHub repository
+
 If you take a look at main_page.py you find that it mainly consits of two functions which get called at the end of the program.
 Let's take a look at how these two functions work in more detail
 
@@ -92,10 +94,10 @@ When we enter the function we’ll first stumble upon an if else statement. This
 
 Inside the same graph() function we then first take each closing price and multiply it with the quantity from our positions. After that we add up all closing prices from all instruments with each other and save it in a final list called portfolio_values_of_all_instruments. 
 
-To be clear, every integer value in this list represent the total portfolio worth of one day. 
+To be clear, every integer value in this list represent the total portfolio worth of one day❗️
 
 
-For plotting our graph we will use the line() method from plotly.express. 
+For plotting our graph we will use the line() method from plotly.express
 
 This line() method takes a dataframe as input parameter. I decided to create a csv file and put it in a the input parameter but you could do the same with a pandas dataframe. 
 
@@ -105,6 +107,6 @@ In the container we use streamlit’s plotly_chart() method and hand over our pl
 
 -------
 
-This project was created during my summer internship at [lemon.markets](https://github.com/lemon-markets/content-prophet-time-series-stock-forecasting)
+This project was created during my summer internship at [lemon.markets](https://github.com/lemon-markets/content-prophet-time-series-stock-forecasting)🍋💛
 
 A berlin-based Fintech startup which is developing a Brokerage API and offering a Trading and Market Data API 
