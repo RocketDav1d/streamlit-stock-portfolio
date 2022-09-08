@@ -8,7 +8,7 @@ You can find an article explaining the portfolio here
 If you take a look at main_page.py you find that it mainly consits of two functions which get called at the end of the program.
 Let's take a look at how these two functions work in more detail
 
-### Metrics and Dataframe ###
+### Metrics and Dataframe 📊 ###
 
 ![](images/metrics%20%26%20dataframe.png)
 
