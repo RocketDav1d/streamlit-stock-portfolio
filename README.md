@@ -6,7 +6,7 @@ You can find an article explaining the portfolio [here](https://medium.com/lemon
 
 This code runs on the Streamlit [Cloud](https://streamlit.io/cloud). A free service by Streamlit to share your data apps by deploying directly from the GitHub repository
 
-If you take a look at main_page.py you find that it mainly consits of two functions which get called at the end of the program.
+If you take a look at **main_page.py**  you find that it mainly consits of two functions which get called at the end of the program.
 Let's take a look at how these two functions work in more detail
 
 ------
