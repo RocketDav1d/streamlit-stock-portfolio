@@ -8,12 +8,11 @@ You can find an article explaining the portfolio here
 If you take a look at main_page.py you find that it mainly consits of two functions which get called at the end of the program.
 Let's take a look at how these two functions work in more detail
 
-
-##Metrics and Dataframe##
+### Metrics and Dataframe ###
 
 ![](images/metrics%20%26%20dataframe.png)
 
-####Metrics####
+#### Metrics ####
 
 First of all we look at how to create the 3 metrics (Portfolio Value, Total Investment, Gain / Loss)
 
@@ -28,7 +27,7 @@ Finally we can then calculate gain/loss and percentage gain/loss.
 As a last step we then prettify the data by turning the integers into strings and adding commas as well as € and %.
 
 
-####Dataframe####
+#### Dataframe ####
 
 Now let’s have a look at how we can create the dataframe. We are still in the same while loop inside the same function. For some of the numbers inside our dataframe we can use the data from the positions GET request above. But we also need additional data from the quotes and ohlc endpoint. 
 
@@ -62,7 +61,7 @@ That’s it for the first part. You can already run your app to see if it works 
 streamlit run main_page.py
 
 
-##Graph##
+### Graph ###
 
 ![](images/portfolio%20performance%20graph%20.png)
 
