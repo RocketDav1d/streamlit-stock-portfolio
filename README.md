@@ -23,7 +23,7 @@ First of all we look at how to create the 3 metrics (Portfolio Value, Total Inve
 
 We start by making the get request to the positions endpoint. We then loop trough our response results in a for loop and append the data to some temporary lists. 
 
-We only need temporary lists for the Portfolio Value and Total Investment as we can calculate Gain/Loss and Percentage Gain/Loss using those two metrics.
+We only need temporary lists for *Portfolio Value* and *Total Investment* as we can calculate *Gain/Loss* and *Percentage Gain/Loss* with *Portfolio Value* and *Total Investment*.
 
 Then we use sum() to get the sum of all values in temp_portfoio_value and temp_total_investment_value in order to get the overall portfolio value and total investment value. 
 
