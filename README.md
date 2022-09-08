@@ -17,7 +17,7 @@ Let's take a look at how these two functions work in more detail
 
 -------
 
-#### Metrics 1️⃣2️⃣3️⃣ ####
+#### Metrics 🧩 ####
 
 First of all we look at how to create the 3 metrics (Portfolio Value, Total Investment, Gain / Loss)
 
