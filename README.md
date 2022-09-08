@@ -2,14 +2,18 @@
 
 Get a glimpse of the running version [here](https://rocketdav1d-streamlit-stock-portfolio-main-page-uieq9e.streamlitapp.com/)
 
-You can find an article explaining the portfolio here
+You can find an article explaining the portfolio [here](https://medium.com/lemon-markets)
 
 If you take a look at main_page.py you find that it mainly consits of two functions which get called at the end of the program.
 Let's take a look at how these two functions work in more detail
 
+------
+
 ### Metrics and Dataframe 📊 ###
 
 ![](images/metrics%20%26%20dataframe.png)
+
+-------
 
 #### Metrics 1️⃣2️⃣3️⃣ ####
 
@@ -24,6 +28,8 @@ Then we use sum() to get the sum of all values in temp_portfoio_value and temp_t
 Finally we can then calculate gain/loss and percentage gain/loss.
 
 As a last step we then prettify the data by turning the integers into strings and adding commas as well as € and %.
+
+-------
 
 
 #### Dataframe 🧮 ####
@@ -54,6 +60,8 @@ We create the data table by using the table method from streamlit and put in our
 That’s it for the first part. You can already run your app to see if it works with the following command.
 
 streamlit run main_page.py
+
+-------
 
 
 ### Graph 📈 ###
@@ -94,3 +102,9 @@ This line() method takes a dataframe as input parameter. I decided to create a c
 Then we again use a placeholder variable( this variable is equal to st.empty()) and apply streamlit’s container method on it.
 
 In the container we use streamlit’s plotly_chart() method and hand over our plotly figure as the input parameter.
+
+-------
+
+This project was created during my summer internship at [lemon.markets](https://github.com/lemon-markets/content-prophet-time-series-stock-forecasting)
+
+A berlin-based Fintech startup which is developing a Brokerage API and offering a Trading and Market Data API 
